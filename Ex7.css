@@ -1,0 +1,46 @@
+* {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+main {
+  width: 65%;
+  height: 100%;
+  margin: 0 auto;
+}
+#imagens {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+p {
+  font-size: 3em;
+}
+canvas {
+  color: white;
+}
+
+a {
+  list-style: none;
+  text-decoration: none;
+  color: black;
+  font-size: 2em;
+  padding: 0.2em;
+  border-radius: 0.5em;
+  opacity: 0.7;
+  transition: linear opacity 1s;
+  transition: linear background-color 0.5s;
+}
+
+a:hover {
+  opacity: 1;
+  background-color: gainsboro;
+}

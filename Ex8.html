@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercicio 8</title>
+  <link rel="stylesheet" href="Ex8.css" />
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body style="background-color: rgb(52, 52, 52); color: gainsboro;" class="">
+  <header>
+    <h1>Operações Aritméticas e Lógicas em Imagens</h1>
+  </header>
+  <div id="operacoes" class="row g-3">
+    <h2>Operações Aritméticas</h2>
+    <div id="div-botoes" class="col">
+      <button type="button" class="btn btn-outline-light btn-lg" onclick="Adicao()" id="btn-add">Adição</button>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-sbt" onclick="Subtracao()">Subtração</button>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-mult"
+        onclick="Multiplicacao()">Multiplicação</button>
+      <input type="text" id="valor-mult" placeholder="multiplicador" />
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-div" onclick="Divisao()">Divisão</button>
+      <input type="text" id="valor-div" placeholder="Divisor" />
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-med" onclick="Media()">Média</button>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-blen" onclick="Blending()">Blending</button>
+      <input type="text" id="valor-blen" placeholder="Blending" />
+    </div>
+    <div id="div-botoes" class="form-floating mb-3">
+      <h2>Operações Lógicas</h2>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-and" onclick="AND()">AND</button>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-or" onclick="OR()">OR</button>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-xor" onclick="XOR()">XOR</button>
+      <button type="button" class="btn btn-outline-light btn-lg" id="btn-not" onclick="NOT()">NOT</button>
+    </div>
+    <div id="div-botoes" class="col">
+      <h2>Outras operações</h2>
+      <button type="button" class="btn btn-outline-light btn-lg" onclick="OneBit()">RGB => 1bit</button>
+      <button type="button" class="btn btn-outline-light btn-lg" onclick="EightBit()">RGB => 8bit</button>
+      <button type="button" class="btn btn-outline-light btn-lg" onclick="Negativo()">Negativo</button>
+      <button type="button" class="btn btn-outline-light btn-lg" onclick="BrilhoH()"> + Brilho</button>
+      <input id="number-input" onchange="numberChange()" placeholder="brilho" type="number" min="0" max="250" />
+      <button type="button" class="btn btn-outline-light btn-lg" onclick="BrilhoL()"> - Brilho</button>
+    </div>
+  </div>
+  <div class="imagens">
+    <div class="imagem-container">
+      <h2>Imagem A</h2>
+      <canvas id="canvas1"></canvas>
+      <input type="file" class="form-control" id="img-A">
+      <label class="input-group-text" id="label-A" for="img-A">Carregar imagem A</label>
+    </div>
+    <div class="imagem-container">
+      <h2>Imagem B</h2>
+      <canvas id="canvas2"></canvas>
+      <input type="file" class="form-control" id="img-B">
+      <label class="input-group-text" id="label-B" for="img-B">Carregar imagem B</label>
+    </div>
+    <div class="imagem-container">
+      <h2>Imagem Resultante</h2>
+      <canvas id="canvas3"></canvas>
+      <button type="button" class="btn btn-outline-light btn-lg" id="botao-C" onclick="SalvarImg()">Salvar
+        Imagem</button>
+    </div>
+  </div>
+  <div class="imagens histograma">
+    <div class="imagem-container div-hist">
+      <h2>Histograma</h2>
+      <canvas id="canvas4"></canvas>
+      <div class="div-botoes">
+        <button type="button" class="btn btn-outline-light btn-lg" onclick="Histograma()">Executar Histograma</button>
+        <button type="button" class="btn btn-outline-light btn-lg" onclick="NormalizarHist()">Normalizar
+          Histograma</button>
+      </div>
+    </div>
+    <div class="imagens filtros">
+      <div class="imagem-container div-hist">
+        <h2>Filtros</h2>
+        <div class="div-botoes">
+          <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMax()">Filter MAX</button>
+          <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMin()">Filter MIN</button>
+          <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMean()">Filter MEAN</button>
+        </div>
+      </div>
+    </div>
+    <script src="Ex8.js"></script>
+</body>
+
+</html>
