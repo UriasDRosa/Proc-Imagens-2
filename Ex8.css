@@ -23,11 +23,11 @@ h2 {
   align-items: center;
 }
 
-#div-botoes {
+.div-botoes {
   text-align: center;
   margin-top: 1%;
 }
-#div-botoes input {
+.div-botoes input {
   background-color: transparent;
   padding: 0.5rem 1rem;
   border: 1px solid white;
@@ -59,9 +59,9 @@ canvas{
   text-align: center;
 }
 
-#outros input{
+input{
   margin: 2% 0.3% 0 0.3%;
-  width: 8%;
+  width: 15rem;
 }
 .botao-H{
   font-size: 1em;

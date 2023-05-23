@@ -16,7 +16,7 @@
   </header>
   <div id="operacoes" class="row g-3">
     <h2>Operações Aritméticas</h2>
-    <div id="div-botoes" class="col">
+    <div class="div-botoes" class="col">
       <button type="button" class="btn btn-outline-light btn-lg" onclick="Adicao()" id="btn-add">Adição</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-sbt" onclick="Subtracao()">Subtração</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-mult"
@@ -28,14 +28,14 @@
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-blen" onclick="Blending()">Blending</button>
       <input type="text" id="valor-blen" placeholder="Blending" />
     </div>
-    <div id="div-botoes" class="form-floating mb-3">
+    <div class="div-botoes" class="form-floating mb-3">
       <h2>Operações Lógicas</h2>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-and" onclick="AND()">AND</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-or" onclick="OR()">OR</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-xor" onclick="XOR()">XOR</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-not" onclick="NOT()">NOT</button>
     </div>
-    <div id="div-botoes" class="col">
+    <div class="div-botoes" class="col">
       <h2>Outras operações</h2>
       <button type="button" class="btn btn-outline-light btn-lg" onclick="OneBit()">RGB => 1bit</button>
       <button type="button" class="btn btn-outline-light btn-lg" onclick="EightBit()">RGB => 8bit</button>
@@ -82,6 +82,9 @@
           <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMax()">Filter MAX</button>
           <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMin()">Filter MIN</button>
           <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMean()">Filter MEAN</button>
+          <button type="button" class="btn btn-outline-light btn-lg" onclick="Mediana()">Filter Mediana</button>
+          <button type="button" class="btn btn-outline-light btn-lg" onclick="Ordem()">Filter Ordem</button>
+          <input id="number-input2" onchange="numberChange2()" placeholder="Filtagem por Ordem" type="number" min="0" max="8" />
         </div>
       </div>
     </div>
