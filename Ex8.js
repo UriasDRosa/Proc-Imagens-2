@@ -1001,13 +1001,54 @@ function Mediana() {
 let numberInp2 = document.getElementById("number-input2");
 let numberValue2;
 function numberChange2() {
-  numberValue = Number(numberInp.value);
-  if (numberValue > 8) {
-    numberValue = 8;
-    numberInp.value = 8;
+  numberValue2 = Number(numberInp.value);
+  if (numberValue2 > 8) {
+    numberValue2 = 8;
+    numberInp2.value = 8;
   }
-  if (numberValue < 0) {
-    numberValue = 0;
-    numberInp.value = 0;
+  if (numberValue2 < 0) {
+    numberValue2 = 0;
+    numberInp2.value = 0;
   }
+}
+
+function Ordem(){
+  canvas3.width = canvas1.width;
+  canvas3.height = canvas1.height;
+
+  const imageData1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+  const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
+
+  const data = imageData1.data;
+  const filteredData = imageData3.data;
+
+  for (let y = 0; y < canvas1.height; y++) {
+    for (let x = 0; x < canvas1.width; x++) {
+      const index = (y * canvas1.width + x) * 4;
+      const neighbors = [];
+
+      // Coleta os valores dos pixels vizinhos
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
+          const neighborValue = data[neighborIndex];
+          neighbors.push(neighborValue);
+        }
+      }
+
+      // Ordena os valores dos vizinhos em ordem crescente
+      neighbors.sort((a, b) => b - a);
+
+      // Calcula o valor mediano
+      let ordem = neighbors[numberValue2];
+
+      // Define os componentes RGBA do pixel filtrado com o valor mediano
+      filteredData[index] = ordem; // componente R
+      filteredData[index + 1] = ordem; // componente G
+      filteredData[index + 2] = ordem; // componente B
+      filteredData[index + 3] = 255; // componente A
+    }
+  }
+
+  context3.putImageData(imageData3, 0, 0);
 }
