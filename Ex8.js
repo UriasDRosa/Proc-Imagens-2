@@ -930,8 +930,8 @@ function filterMean() {
   const data = imageData1.data;
   const filteredData = imageData3.data;
 
-  for (let y = 0; y < canvas1.height; y++) {
-    for (let x = 0; x < canvas1.width; x++) {
+  for (let y = 0; y <= canvas1.height; y++) {
+    for (let x = 0; x <= canvas1.width; x++) {
       const index = (y * canvas1.width + x) * 4;
       let media = 0;
       // Filtro 3x3
@@ -1001,7 +1001,7 @@ function Mediana() {
 let numberInp2 = document.getElementById("number-input2");
 let numberValue2;
 function numberChange2() {
-  numberValue2 = Number(numberInp.value);
+  numberValue2 = Number(numberInp2.value);
   if (numberValue2 > 8) {
     numberValue2 = 8;
     numberInp2.value = 8;
@@ -1012,7 +1012,7 @@ function numberChange2() {
   }
 }
 
-function Ordem(){
+function Ordem() {
   canvas3.width = canvas1.width;
   canvas3.height = canvas1.height;
 
@@ -1037,7 +1037,7 @@ function Ordem(){
       }
 
       // Ordena os valores dos vizinhos em ordem crescente
-      neighbors.sort((a, b) => b - a);
+      neighbors.sort((a, b) => a - b);
 
       // Calcula o valor mediano
       let ordem = neighbors[numberValue2];
@@ -1049,6 +1049,51 @@ function Ordem(){
       filteredData[index + 3] = 255; // componente A
     }
   }
+  context3.putImageData(imageData3, 0, 0);
+}
 
+function SuavComp() {
+  canvas3.width = canvas1.width;
+  canvas3.height = canvas1.height;
+
+  const imageData1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+  const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
+
+  const data = imageData1.data;
+  const filteredData = imageData3.data;
+
+  for (let y = 0; y < canvas1.height; y++) {
+    for (let x = 0; x < canvas1.width; x++) {
+      const index = (y * canvas1.width + x) * 4;
+      const neighbors = [];
+
+      // Coleta os valores dos pixels vizinhos
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
+          const neighborValue = data[neighborIndex];
+          neighbors.push(neighborValue);
+        }
+      }
+
+      // Pega os valores minimo e maximo do array de vizinhos do pixel central
+      let max = Math.max(neighbors);
+      let min = Math.min(neighbors);
+
+      // Logica para atribuir o valor do pixel
+
+      if (data[index] > max) {
+        data[index] = max;
+      } else if (data[index] < min) {
+        data[index] < min;
+      }
+
+      // Define os componentes RGBA do pixel filtrado com o valor da Suavização comparativa
+      filteredData[index] = data[index]; // componente R
+      filteredData[index + 1] = data[index]; // componente G
+      filteredData[index + 2] = data[index]; // componente B
+      filteredData[index + 3] = 255; // componente A
+    }
+  }
   context3.putImageData(imageData3, 0, 0);
 }
