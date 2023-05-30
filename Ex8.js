@@ -1,3 +1,4 @@
+// Importação dos arquivos para o código
 const imgA = document.getElementById("img-A");
 
 const labelA = document.getElementById("label-A");
@@ -7,17 +8,6 @@ const imgB = document.getElementById("img-B");
 
 const labelB = document.getElementById("label-B");
 labelB.addEventListener("click", function () {});
-
-const canvas1 = document.getElementById("canvas1");
-const canvas2 = document.getElementById("canvas2");
-const canvas3 = document.getElementById("canvas3");
-
-const defaultCanvasW = canvas1.width;
-const defaultCanvasH = canvas1.height;
-
-const context1 = canvas1.getContext("2d");
-const context2 = canvas2.getContext("2d");
-const context3 = canvas3.getContext("2d");
 
 // Carregando as imagens para a manipulação
 imgA.addEventListener("change", function () {
@@ -40,105 +30,240 @@ imgB.addEventListener("change", function () {
   image.src = URL.createObjectURL(this.files[0]);
 });
 
-function Adicao() {
-  canvas3.width = canvas1.width;
-  canvas3.height = canvas1.height;
+const check3x3 = document.getElementById("inlineRadio1");
+const check5x5 = document.getElementById("inlineRadio2");
+const check7x7 = document.getElementById("inlineRadio3");
 
-  const imageData1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
-  const imageData2 = context2.getImageData(0, 0, canvas2.width, canvas2.height);
-  const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
-  for (let i = 0; i < imageData1.data.length; i += 4) {
-    imageData3.data[i] = imageData1.data[i] + imageData2.data[i];
-    if (imageData3.data[i] > 255) imageData3[i] = 255;
-    else if (imageData3.data[i] < 0) imageData3[i] = 0;
+// Elementos do HTML Canvas
+const canvas1 = document.getElementById("canvas1");
+const canvas2 = document.getElementById("canvas2");
+const canvas3 = document.getElementById("canvas3");
 
-    imageData3.data[i + 1] = imageData1.data[i + 1] + imageData2.data[i + 1];
-    if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
-    else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
+const defaultCanvasW = canvas1.width;
+const defaultCanvasH = canvas1.height;
 
-    imageData3.data[i + 2] = imageData1.data[i + 2] + imageData2.data[i + 2];
-    if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
-    else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
+const context1 = canvas1.getContext("2d");
+const context2 = canvas2.getContext("2d");
+const context3 = canvas3.getContext("2d");
 
-    imageData3.data[i + 3] = 255;
+////////////////////////////////////////
+
+// criando a máscara para fazer as funcões de filtragem
+var kernel = 3;
+var kernelHalf = Math.floor(kernel / 2);
+
+function radioFunc() {
+  if (check5x5.checked == true) {
+    kernel = 5;
+  } else if (check7x7.checked == true) {
+    kernel = 7;
   }
+}
 
-  context3.putImageData(imageData3, 0, 0);
+/* Algumas das funcões do código foram otimizadas para serem executadas em ambos os canvas, priorizando o primeiro, em outras é necessário carregar a imagem no Canvas 1*/
+
+function Validation() {
+  let flag = false;
+  if (
+    canvas1.height == (null || undefined) ||
+    canvas1.width == (null || undefined) ||
+    canvas1.height == 0 ||
+    canvas1.width == 0
+  ) {
+  } else {
+    flag = true;
+  }
+  if (
+    canvas2.height == (null || undefined) ||
+    canvas2.width == (null || undefined) ||
+    canvas2.height == 0 ||
+    canvas2.width == 0
+  ) {
+  } else {
+    flag = true;
+  }
+  if (flag == false) {
+    window.alert("Imagens inválidas");
+  }
+  return flag;
+}
+
+// Validação para quando se precisa realizar um calculo com as duas imagens
+function ValidationTwo() {
+  if (
+    canvas1.height == (null || undefined) ||
+    canvas1.width == (null || undefined) ||
+    canvas1.height == 0 ||
+    canvas1.width == 0
+  ) {
+    window.alert("Imagens inválidas");
+  } else if (
+    canvas2.height == (null || undefined) ||
+    canvas2.width == (null || undefined) ||
+    canvas2.height == 0 ||
+    canvas2.width == 0
+  ) {
+    window.alert("Imagens inválidas");
+  } else if (
+    canvas1.height != canvas2.height ||
+    canvas1.width != canvas2.width
+  ) {
+    window.alert("As imagens precisam ter o mesmo tamanho");
+  } else {
+    return true;
+  }
+}
+
+function Adicao() {
+  if (ValidationTwo() == true) {
+    // Passa os parametros do tamanho da imagem para o terceiro Canvas
+    canvas3.width = canvas1.width;
+    canvas3.height = canvas1.height;
+
+    // ImageData respresenta todos os dados da imagem
+    // ImageData.data pega o tamanho em pixels da imagem
+
+    const imageData1 = context1.getImageData(
+      0,
+      0,
+      canvas1.width,
+      canvas1.height
+    );
+    const imageData2 = context2.getImageData(
+      0,
+      0,
+      canvas2.width,
+      canvas2.height
+    );
+    const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
+    for (let i = 0; i < imageData1.data.length; i += 4) {
+      imageData3.data[i] = imageData1.data[i] + imageData2.data[i];
+      if (imageData3.data[i] > 255) imageData3[i] = 255;
+      else if (imageData3.data[i] < 0) imageData3[i] = 0;
+
+      imageData3.data[i + 1] = imageData1.data[i + 1] + imageData2.data[i + 1];
+      if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
+      else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
+
+      imageData3.data[i + 2] = imageData1.data[i + 2] + imageData2.data[i + 2];
+      if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
+      else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
+
+      imageData3.data[i + 3] = 255;
+    }
+
+    context3.putImageData(imageData3, 0, 0);
+  }
 }
 
 function Subtracao() {
-  canvas3.width = canvas1.width;
-  canvas3.height = canvas1.height;
+  if (ValidationTwo() == true) {
+    canvas3.width = canvas1.width;
+    canvas3.height = canvas1.height;
 
-  const imageData1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
-  const imageData2 = context2.getImageData(0, 0, canvas2.width, canvas2.height);
-  const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
-  for (let i = 0; i < imageData1.data.length; i += 4) {
-    imageData3.data[i] = imageData1.data[i] - imageData2.data[i];
-    if (imageData3.data[i] > 255) imageData3[i] = 255;
-    else if (imageData3.data[i] < 0) imageData3[i] = 0;
+    const imageData1 = context1.getImageData(
+      0,
+      0,
+      canvas1.width,
+      canvas1.height
+    );
+    const imageData2 = context2.getImageData(
+      0,
+      0,
+      canvas2.width,
+      canvas2.height
+    );
+    const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
+    for (let i = 0; i < imageData1.data.length; i += 4) {
+      imageData3.data[i] = imageData1.data[i] - imageData2.data[i];
+      if (imageData3.data[i] > 255) imageData3[i] = 255;
+      else if (imageData3.data[i] < 0) imageData3[i] = 0;
 
-    imageData3.data[i + 1] = imageData1.data[i + 1] - imageData2.data[i + 1];
-    if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
-    else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
+      imageData3.data[i + 1] = imageData1.data[i + 1] - imageData2.data[i + 1];
+      if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
+      else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
 
-    imageData3.data[i + 2] = imageData1.data[i + 2] - imageData2.data[i + 2];
-    if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
-    else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
+      imageData3.data[i + 2] = imageData1.data[i + 2] - imageData2.data[i + 2];
+      if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
+      else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
 
-    imageData3.data[i + 3] = 255;
+      imageData3.data[i + 3] = 255;
+    }
+    context3.putImageData(imageData3, 0, 0);
   }
-
-  context3.putImageData(imageData3, 0, 0);
 }
 
 function Multiplicacao() {
-  let InpMulti = document.getElementById("valor-mult");
-  let valor = InpMulti.value;
+  if (Validation() == true) {
+    if (canvas1.width != 0) {
+      let InpMulti = document.getElementById("valor-mult");
+      let valor = InpMulti.value;
 
-  const imageData1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
-  const imageData2 = context2.getImageData(0, 0, canvas2.width, canvas2.height);
+      const imageData1 = context1.getImageData(
+        0,
+        0,
+        canvas1.width,
+        canvas1.height
+      );
 
-  if (canvas1.width == 300) {
-    const imageData3 = context3.createImageData(canvas2.width, canvas2.height);
-    canvas3.width = canvas2.width;
-    canvas3.height = canvas2.height;
-    for (let i = 0; i < imageData2.data.length; i += 4) {
-      imageData3.data[i] = imageData2.data[i] * valor;
-      if (imageData3.data[i] > 255) imageData3[i] = 255;
-      else if (imageData3.data[i] < 0) imageData3[i] = 0;
+      const imageData3 = context3.createImageData(
+        canvas1.width,
+        canvas1.height
+      );
+      canvas3.width = canvas1.width;
+      canvas3.height = canvas1.height;
+      for (let i = 0; i < imageData1.data.length; i += 4) {
+        imageData3.data[i] = imageData1.data[i] * valor;
+        if (imageData3.data[i] > 255) imageData3[i] = 255;
+        else if (imageData3.data[i] < 0) imageData3[i] = 0;
 
-      imageData3.data[i + 1] = imageData2.data[i + 1] * valor;
-      if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
-      else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
+        imageData3.data[i + 1] = imageData1.data[i + 1] * valor;
+        if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
+        else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
 
-      imageData3.data[i + 2] = imageData2.data[i + 2] * valor;
-      if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
-      else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
+        imageData3.data[i + 2] = imageData1.data[i + 2] * valor;
+        if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
+        else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
 
-      imageData3.data[i + 3] = 255;
+        imageData3.data[i + 3] = 255;
+      }
+      context3.putImageData(imageData3, 0, 0);
     }
-    context3.putImageData(imageData3, 0, 0);
-  } else {
-    canvas3.width = canvas1.width;
-    canvas3.height = canvas1.height;
-    const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
-    for (let i = 0; i < imageData1.data.length; i += 4) {
-      imageData3.data[i] = imageData1.data[i] * valor;
-      if (imageData3.data[i] > 255) imageData3[i] = 255;
-      else if (imageData3.data[i] < 0) imageData3[i] = 0;
 
-      imageData3.data[i + 1] = imageData1.data[i + 1] * valor;
-      if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
-      else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
+    if (canvas2.width != 0) {
+      let InpMulti = document.getElementById("valor-mult");
+      let valor = InpMulti.value;
 
-      imageData3.data[i + 2] = imageData1.data[i + 2] * valor;
-      if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
-      else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
+      const imageData2 = context2.getImageData(
+        0,
+        0,
+        canvas2.width,
+        canvas2.height
+      );
 
-      imageData3.data[i + 3] = 255;
+      const imageData3 = context3.createImageData(
+        canvas2.width,
+        canvas2.height
+      );
+      canvas3.width = canvas2.width;
+      canvas3.height = canvas2.height;
+      for (let i = 0; i < imageData2.data.length; i += 4) {
+        imageData3.data[i] = imageData2.data[i] * valor;
+        if (imageData3.data[i] > 255) imageData3[i] = 255;
+        else if (imageData3.data[i] < 0) imageData3[i] = 0;
+
+        imageData3.data[i + 1] = imageData2.data[i + 1] * valor;
+        if (imageData3.data[i + 1] > 255) imageData3[i + 1] = 255;
+        else if (imageData3.data[i + 1] < 0) imageData3[i + 1] = 0;
+
+        imageData3.data[i + 2] = imageData2.data[i + 2] * valor;
+        if (imageData3.data[i + 2] > 255) imageData3[i + 2] = 255;
+        else if (imageData3.data[i + 2] < 0) imageData3[i + 2] = 0;
+
+        imageData3.data[i + 3] = 255;
+      }
+      context3.putImageData(imageData3, 0, 0);
     }
-    context3.putImageData(imageData3, 0, 0);
   }
 }
 
@@ -865,8 +990,8 @@ function filterMax() {
       const index = (y * canvas1.width + x) * 4;
       let max = 0;
 
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -kernelHalf; dy <= kernelHalf; dy++) {
+        for (let dx = -kernelHalf; dx <= kernelHalf; dx++) {
           const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
           const neighborValue = data[neighborIndex];
 
@@ -900,8 +1025,8 @@ function filterMin() {
       const index = (y * canvas1.width + x) * 4;
       let min = 255;
 
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -kernelHalf; dy <= kernelHalf; dy++) {
+        for (let dx = -kernelHalf; dx <= kernelHalf; dx++) {
           const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
           const neighborValue = data[neighborIndex];
 
@@ -934,9 +1059,8 @@ function filterMean() {
     for (let x = 0; x <= canvas1.width; x++) {
       const index = (y * canvas1.width + x) * 4;
       let media = 0;
-      // Filtro 3x3
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -kernelHalf; dy <= kernelHalf; dy++) {
+        for (let dx = -kernelHalf; dx <= kernelHalf; dx++) {
           // faz os calculos utilizando a tabela de valores da máscara
           const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
           const neighborValue = data[neighborIndex];
@@ -973,8 +1097,8 @@ function Mediana() {
       const neighbors = [];
 
       // Coleta os valores dos pixels vizinhos
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -kernelHalf; dy <= kernelHalf; dy++) {
+        for (let dx = -kernelHalf; dx <= kernelHalf; dx++) {
           const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
           const neighborValue = data[neighborIndex];
           neighbors.push(neighborValue);
@@ -1028,8 +1152,8 @@ function Ordem() {
       const neighbors = [];
 
       // Coleta os valores dos pixels vizinhos
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -kernelHalf; dy <= kernelHalf; dy++) {
+        for (let dx = -kernelHalf; dx <= kernelHalf; dx++) {
           const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
           const neighborValue = data[neighborIndex];
           neighbors.push(neighborValue);

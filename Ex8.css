@@ -25,17 +25,17 @@ h2 {
 
 .div-botoes {
   text-align: center;
-  margin-top: 1%;
+  justify-content: center;
 }
 .div-botoes input {
   background-color: transparent;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 1rem;
   border: 1px solid white;
   color: white;
   border-radius: 0.5rem;
   font-size: 1.25rem;
+  margin: 0 0 0 0;
 }
-
 
 .imagem-container{
   padding: 2rem 1rem;
@@ -55,7 +55,6 @@ canvas{
 }
 
 #outros{
-  margin: 2%;
   text-align: center;
 }
 
@@ -79,5 +78,10 @@ input{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.imagem-container label {
+  display: none;
+  visibility: hidden;
 }
 

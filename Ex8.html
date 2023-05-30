@@ -21,11 +21,13 @@
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-sbt" onclick="Subtracao()">Subtração</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-mult"
         onclick="Multiplicacao()">Multiplicação</button>
-      <input type="text" id="valor-mult" placeholder="multiplicador" />
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-div" onclick="Divisao()">Divisão</button>
-      <input type="text" id="valor-div" placeholder="Divisor" />
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-med" onclick="Media()">Média</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-blen" onclick="Blending()">Blending</button>
+    </div>
+    <div class="div-botoes form-floating mb-3">
+      <input type="text" id="valor-mult" placeholder="Multiplicador" />
+      <input type="text" id="valor-div" placeholder="Divisor" />
       <input type="text" id="valor-blen" placeholder="Blending" />
     </div>
     <div class="div-botoes" class="form-floating mb-3">
@@ -35,32 +37,34 @@
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-xor" onclick="XOR()">XOR</button>
       <button type="button" class="btn btn-outline-light btn-lg" id="btn-not" onclick="NOT()">NOT</button>
     </div>
-    <div class="div-botoes" class="col">
+    <div class="div-botoes" class="form-floating mb-3">
       <h2>Outras operações</h2>
       <button type="button" class="btn btn-outline-light btn-lg" onclick="OneBit()">RGB => 1bit</button>
       <button type="button" class="btn btn-outline-light btn-lg" onclick="EightBit()">RGB => 8bit</button>
       <button type="button" class="btn btn-outline-light btn-lg" onclick="Negativo()">Negativo</button>
       <button type="button" class="btn btn-outline-light btn-lg" onclick="BrilhoH()"> + Brilho</button>
-      <input id="number-input" onchange="numberChange()" placeholder="brilho" type="number" min="0" max="250" />
       <button type="button" class="btn btn-outline-light btn-lg" onclick="BrilhoL()"> - Brilho</button>
+    </div>
+    <div class="div-botoes" class="form-floating mb-3">
+      <input id="number-input" onchange="numberChange()" placeholder="Brilho de 0 a 250" type="number" min="0" max="250" />
     </div>
   </div>
   <div class="imagens">
     <div class="imagem-container">
       <h2>Imagem A</h2>
-      <canvas id="canvas1"></canvas>
+      <canvas id="canvas1" width="0" height="0"></canvas>
       <input type="file" class="form-control" id="img-A">
       <label class="input-group-text" id="label-A" for="img-A">Carregar imagem A</label>
     </div>
     <div class="imagem-container">
       <h2>Imagem B</h2>
-      <canvas id="canvas2"></canvas>
+      <canvas id="canvas2" width="0" height="0"></canvas>
       <input type="file" class="form-control" id="img-B">
       <label class="input-group-text" id="label-B" for="img-B">Carregar imagem B</label>
     </div>
     <div class="imagem-container">
       <h2>Imagem Resultante</h2>
-      <canvas id="canvas3"></canvas>
+      <canvas id="canvas3" width="0" height="0"></canvas>
       <button type="button" class="btn btn-outline-light btn-lg" id="botao-C" onclick="SalvarImg()">Salvar
         Imagem</button>
     </div>
@@ -68,7 +72,7 @@
   <div class="imagens histograma">
     <div class="imagem-container div-hist">
       <h2>Histograma</h2>
-      <canvas id="canvas4"></canvas>
+      <canvas id="canvas4" width="0" height="0"></canvas>
       <div class="div-botoes">
         <button type="button" class="btn btn-outline-light btn-lg" onclick="Histograma()">Executar Histograma</button>
         <button type="button" class="btn btn-outline-light btn-lg" onclick="NormalizarHist()">Normalizar
@@ -78,15 +82,33 @@
     <div class="imagens filtros">
       <div class="imagem-container div-hist">
         <h2>Filtros</h2>
-        <div class="div-botoes">
+        <div class="div-botoes" class="form-floating mb-3">
           <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMax()">Filter MAX</button>
           <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMin()">Filter MIN</button>
           <button type="button" class="btn btn-outline-light btn-lg" onclick="filterMean()">Filter MEAN</button>
+        </div>
+        <div class="div-botoes" class="form-floating mb-3">
           <button type="button" class="btn btn-outline-light btn-lg" onclick="Mediana()">Filter Mediana</button>
           <button type="button" class="btn btn-outline-light btn-lg" onclick="Ordem()">Filter Ordem</button>
-          <input id="number-input2" onchange="numberChange2()" placeholder="Filtagem por Ordem" type="number" min="0" max="8" />
           <button type="button" class="btn btn-outline-light btn-lg" onclick="SuavComp()">Suavização Comparativa</button>
         </div>
+        <div class="div-botoes" class="form-floating mb-3">
+          <input id="number-input2" onchange="numberChange2()" placeholder="Ordem" type="number" min="0" max="8" />
+        </div>
+      </div>
+    </div>
+    <div class="form-floating mb-3">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked onclick="radioFunc()">
+        <label class="form-check-label" for="inlineRadio1">3x3</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onclick="radioFunc()">
+        <label class="form-check-label" for="inlineRadio2">5x5</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" onclick="radioFunc()">
+        <label class="form-check-label" for="inlineRadio3">7x7</label>
       </div>
     </div>
     <script src="Ex8.js"></script>
