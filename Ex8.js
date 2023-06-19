@@ -49,14 +49,16 @@ const context3 = canvas3.getContext("2d");
 ////////////////////////////////////////
 
 // criando a máscara para fazer as funcões de filtragem
-var kernel = 3;
-var kernelHalf = Math.floor(kernel / 2);
+
+kernel = 3;
 
 function radioFunc() {
   if (check5x5.checked == true) {
     kernel = 5;
+    kernelHalf = Math.floor(kernel / 2);
   } else if (check7x7.checked == true) {
     kernel = 7;
+    kernelHalf = Math.floor(kernel / 2);
   }
 }
 
@@ -1176,7 +1178,7 @@ function Ordem() {
   context3.putImageData(imageData3, 0, 0);
 }
 
-function SuavComp() {
+function SuavCons() {
   canvas3.width = canvas1.width;
   canvas3.height = canvas1.height;
 
@@ -1192,8 +1194,8 @@ function SuavComp() {
       const neighbors = [];
 
       // Coleta os valores dos pixels vizinhos
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -kernelHalf; dy <= kernelHalf; dy++) {
+        for (let dx = -kernelHalf; dx <= kernelHalf; dx++) {
           const neighborIndex = ((y + dy) * canvas1.width + x + dx) * 4;
           const neighborValue = data[neighborIndex];
           neighbors.push(neighborValue);
@@ -1220,4 +1222,73 @@ function SuavComp() {
     }
   }
   context3.putImageData(imageData3, 0, 0);
+}
+
+function FltrGauss() {
+
+  console.log(kernel);
+  console.log(kernelHalf);
+
+  canvas3.width = canvas1.width;
+  canvas3.height = canvas1.height;
+
+  const imageData1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+  const imageData3 = context3.createImageData(canvas1.width, canvas1.height);
+
+  const data = imageData1.data;
+  const filteredData = imageData3.data;
+
+  // Construir o kernel gaussiano
+  const kernelGauss = [];
+  let sum = 0;
+  for (let y = -kernelHalf; y <= kernelHalf; y++) {
+    for (let x = -kernelHalf; x <= kernelHalf; x++) {
+      const value = calculateGaussian(x, y);
+      kernelGauss.push(value);
+      sum += value;
+    }
+  }
+  // Normalizar o kernel para garantir que a soma seja igual a 1
+  for (let i = 0; i < kernelGauss.length; i++) {
+    kernelGauss[i] /= sum;
+  }
+
+  for (let y = 0; y < canvas1.height; y++) {
+    for (let x = 0; x < canvas1.width; x++) {
+      const index = (y * canvas1.width + x) * 4;
+      let newValueR = 0;
+      let newValueG = 0;
+      let newValueB = 0;
+
+      // Aplicar a convolução com o kernel gaussiano
+      for (let ky = -kernelHalf; ky <= kernelHalf; ky++) {
+        for (let kx = -kernelHalf; kx <= kernelHalf; kx++) {
+          const neighborIndex = ((y + ky) * canvas1.width + x + kx) * 4;
+          const neighborValueR = data[neighborIndex];
+          const neighborValueG = data[neighborIndex + 1];
+          const neighborValueB = data[neighborIndex + 2];
+          const kernelValue = kernelGauss[(ky + kernelHalf) * kernel + (kx + kernelHalf)];
+
+          newValueR += neighborValueR * kernelValue;
+          newValueG += neighborValueG * kernelValue;
+          newValueB += neighborValueB * kernelValue;
+        }
+      }
+
+      // Definir os componentes RGBA do pixel filtrado com os novos valores
+      filteredData[index] = newValueR; // componente R
+      filteredData[index + 1] = newValueG; // componente G
+      filteredData[index + 2] = newValueB; // componente B
+      filteredData[index + 3] = 255; // componente A
+    }
+  }
+  console.log(filteredData)
+  context3.putImageData(imageData3, 0, 0);
+}
+// Função para calcular o valor do kernel gaussiano em um ponto específico (x, y)
+function calculateGaussian(x, y) {
+  const sigma = 1.0; // Parâmetro de desvio padrão do kernel gaussiano
+  
+  const exponent = -((x * x) + (y * y)) / (2 * sigma * sigma);
+  return Math.exp(exponent) / (2 * Math.PI * sigma * sigma);
 }
