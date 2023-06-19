@@ -1264,6 +1264,20 @@ function SuavCons() {
   context3.putImageData(imageData3, 0, 0);
 }
 
+let numberInp3 = document.getElementById("number-input3");
+let numberValue3;
+function numberChange3() {
+  numberValue3 = Number(numberInp3.value);
+  if (numberValue3 > 1) {
+    numberValue3 = 1;
+    numberInp3.value = 1;
+  }
+  if (numberValue3 < 0) {
+    numberValue3 = 0;
+    numberInp3.value = 0;
+  }
+}
+
 function FltrGauss() {
 
   canvas3.width = canvas1.width;
@@ -1318,7 +1332,9 @@ function FltrGauss() {
 }
 // Função para calcular o valor do kernel gaussiano em um ponto específico (x, y)
 function calculateGaussian(x, y) {
-  const sigma = 1.0; // Parâmetro de desvio padrão do kernel gaussiano
+  if(numberValue3 > 1) numberValue3 = 1;
+
+  const sigma = numberValue3; // Parâmetro de desvio padrão do kernel gaussiano
 
   const exponent = -(x * x + y * y) / (2 * sigma * sigma);
   return Math.exp(exponent) / (2 * Math.PI * sigma * sigma);
